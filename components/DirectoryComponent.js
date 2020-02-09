@@ -11,7 +11,7 @@ class Directory extends Component {
             campsites: CAMPSITES
         };
     }
-    //Navigator Screen: Title on Header
+
     static navigationOptions = {
         title: 'Directory'
     };
@@ -23,20 +23,20 @@ class Directory extends Component {
                 <ListItem
                     title={item.name}
                     subtitle={item.description}
-                    onPress={() => navigate('CampsiteInfo', { campsiteId: item.id})}
+                    onPress={() => navigate('CampsiteInfo', { campsiteId: item.id })}
                     leftAvatar={{ source: require('./images/react-lake.jpg')}}
                 />
             );
         };
 
         return (
-            <FlatList 
+            <FlatList
                 data={this.state.campsites}
                 renderItem={renderDirectoryItem}
                 keyExtractor={item => item.id.toString()}
             />
         );
-    };
+    }
 }
 
 export default Directory;
