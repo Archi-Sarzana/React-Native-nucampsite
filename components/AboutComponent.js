@@ -53,15 +53,16 @@ class About extends Component {
         }
 
         render () {
-            <Card title = "Community Partners"
-                    
-                     <FlatList
+            return (
+                     <Card title = "Community Partners"> 
+                     
+                 
+            <Card />  />
+            <FlatList
                      data={this.state.campsites}
                      renderItem={renderDirectoryItem}
                      keyExtractor={item => item.id.toString()}
-                 
-            <Card />  />
-
+                
             );    
         }
 
