@@ -35,7 +35,7 @@ class About extends Component {
     }
     
         render() {
-            const renderPartner = ({item}) => {
+            const renderPartner =({item}) => {
                 return (
                     <ListItem
                         title={item.name}
@@ -44,6 +44,7 @@ class About extends Component {
                     />
                 );
             };
+
             return ( 
                 <ScrollView>
                     <Mission/>
@@ -54,8 +55,7 @@ class About extends Component {
                                 renderItem={renderPartner}
                                 keyExtractor={item => item.id.toString()} />
                         </Card>
-                </ScrollView>
-                
+                </ScrollView>      
             );    
     
         }
