@@ -1,18 +1,7 @@
 import React, { Component } from 'react';
 import { ScrollView } from 'react-native';
 import { Card, Text} from 'react-native-elements';
-/* import { CAMPSITES } from '../shared/campsites';
-import { PROMOTIONS } from '../shared/promotions';
-import { PARTNERS } from '../shared/partners'; */
 
-/* function Mission(props) {
-        return (
-            <Card
-                title="Our Mission" wrapperStyle={{margin: 20}}>
-                <Text></Text>
-            </Card>
-        );
-    } */
 
 class Contact extends Component {
 
