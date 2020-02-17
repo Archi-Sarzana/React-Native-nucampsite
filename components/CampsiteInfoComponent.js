@@ -27,9 +27,7 @@ function RenderCampsite(props) {
             <Card
                 featuredTitle={campsite.name}
                 image={{uri: baseUrl + campsite.image}}>
-                <Text style={{margin: 10}}>
-                    {campsite.description}
-                </Text>
+                <Text style={{margin: 10}}>{campsite.description}</Text>
                 <View style={styles.cardRow}>
                 <Icon
                     name={props.favorite ? 'heart' : 'heart-o'}
@@ -72,7 +70,6 @@ function RenderComments({comments}) {
             </View>
         );
     };
-
     return(
         <Card title='Comments'>
             <FlatList
@@ -81,7 +78,6 @@ function RenderComments({comments}) {
                 keyExtractor={item => item.id.toString()}
             />
         </Card>
-
     );
 }
 
@@ -101,8 +97,7 @@ class CampsiteInfo extends Component {
       }
 
       handleComment(campsiteId) {
-        console.log(campsiteId)
-        postComment(campsiteId, this.state.rating, this.state.author, this.state.text)
+        this.props.postComment(campsiteId, rating, author, text);
         this.toggleModal()
     }
 
