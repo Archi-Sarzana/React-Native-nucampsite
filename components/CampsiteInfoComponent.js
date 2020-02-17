@@ -19,41 +19,6 @@ const mapDispatchToProps = {
     postComment: (campsiteId,rating,author,text) => (postComment(campsiteId,rating,author,text))
 };
 
-function RenderCampsite(props) {   
-
-    const {campsite} = props; 
-    if (campsite) {
-        return (
-            <Card
-                featuredTitle={campsite.name}
-                image={{uri: baseUrl + campsite.image}}>
-                <Text style={{margin: 10}}>{campsite.description}</Text>
-                <View style={styles.cardRow}>
-                <Icon
-                    name={props.favorite ? 'heart' : 'heart-o'}
-                    type='font-awesome'
-                    color='#f50'
-                    raised
-                    reverse
-                    onPress={() => props.favorite ? 
-                        console.log('Already set as a favorite') : props.markFavorite()}
-                />
-                <Icon
-                    name='pencil'
-                    type='font-awesome'
-                    color='#5637DD'
-                    raised
-                    reverse
-                    onPress={() => props.onShowModal()}
-                    style={styles.cardItem}/>
-                />
-                </View>
-            </Card>
-        );
-    }
-    return <View />;
-}
-
 function RenderComments({comments}) {
     const renderCommentItem = ({item}) => {
         return (
@@ -70,7 +35,7 @@ function RenderComments({comments}) {
             </View>
         );
     };
-    return(
+    return (
         <Card title='Comments'>
             <FlatList
                 data={comments}
@@ -81,24 +46,59 @@ function RenderComments({comments}) {
     );
 }
 
-class CampsiteInfo extends Component {
-    constructor(props) {
-        super(props)
+function RenderCampsite(props) {   
+
+    const {campsite} = props; 
+    if (campsite) {
+        return (
+            <Card
+                featuredTitle={campsite.name}
+                image={{uri: baseUrl + campsite.image}}>
+                <Text style={{margin: 10}}> {campsite.description}</Text>
+                <View style={styles.cardRow}>
+                <Icon
+                    name={props.favorite ? 'heart' : 'heart-o'}
+                    type='font-awesome'
+                    color='#f50'
+                    raised
+                    reverse
+                    onPress={() => props.favorite ? 
+                        console.log('Already set as a favorite') : props.markFavorite()}
+                />
+                <Icon 
+                name='pencil' 
+                type='font-awesome' 
+                color='#5637DD' 
+                raised reverse onPress={() => props.onShowModal()} 
+                style={styles.cardItem}/>
+            </View>
+            </Card>
+        );
+    }
+        return <View />;
+    }
+
+
+class CampsiteInfo extends Component{
+
+    constructor(props){
+        super(props);
         this.state = {
-            showModal: false,
-            ratings: 5,
-            author: '',
-            text: ''
+            showModal:false,
+            rating:5,
+            author:'',
+            text:''
         };
     }
+
 
     toggleModal() {
         this.setState({showModal: !this.state.showModal});
       }
 
-      handleComment(campsiteId) {
+      handleComment(campsiteId,rating,author,text) {
         this.props.postComment(campsiteId, rating, author, text);
-        this.toggleModal()
+        this.toggleModal();
     }
 
     resetForm() {
@@ -183,21 +183,21 @@ class CampsiteInfo extends Component {
     }
 }
 
-    const styles = StyleSheet.create({
-        cardRow: {
-            alignItems: 'center',
-            justifyContent: 'center',
-            flex: 1,
-            flexDirection: 'row',
-            margin: 20
-        },
-        cardItem: {
-            flex: 1,
-            margin: 10
-        },
-        modal: {
-            justifyContent: 'center',
-            margin: 20
-        }
-    });
-export default connect(mapStateToProps, mapDispatchToProps)(CampsiteInfo);
+const styles = StyleSheet.create({
+    cardRow: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        flexDirection: 'row',
+        margin: 20
+    },
+    cardItem: {
+        flex: 1,
+        margin:10
+    },
+    modal : {
+        justifyContent: 'center',
+        margin: 20
+    }
+});
+export default connect(mapStateToProps,mapDispatchToProps)(CampsiteInfo);
