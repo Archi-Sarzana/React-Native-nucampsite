@@ -15,7 +15,7 @@ class Reservation extends Component {
             date: '',
             showModal: false
         };
-    }
+    }  
 
     static navigationOptions = {
         title: 'Reserve Campsite'
