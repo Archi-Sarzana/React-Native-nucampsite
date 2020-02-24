@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet,
-    Picker, Switch, Button, Alert } from 'react-native';
+    Picker, Switch, Button, Alert, ScrollView } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import * as Animatable from 'react-native-animatable';
 
@@ -19,7 +19,7 @@ class Reservation extends Component {
     static navigationOptions = {
         title: 'Reserve Campsite'
     }
-    
+
     handleReservation() {
         console.log(JSON.stringify(this.state));
         this.handleSubmitAlert();
@@ -36,14 +36,12 @@ class Reservation extends Component {
     handleSubmitAlert(){ 
     Alert.alert(
         'Begin Search?',
-        `Number of Campers: ${this.state.campers} \n
-        Hike-In? ${this.state.hikeIn}\n
-        Date: ${this.state.date}`,
+        `Number of Campers: ${this.state.campers} \nHike-In? ${this.state.hikeIn}\nDate: ${this.state.date}`,
         [
             {
-                text: 'Cancel',
+                text: 'cancel',
                 onPress: () => this.resetForm(),
-                style: 'Cancel'
+                style: 'cancel'
                 
             },
             {
@@ -57,6 +55,7 @@ class Reservation extends Component {
 
     render() {
         return (
+            <ScrollView>
             <Animatable.View 
                 animation='zoomIn' 
                 duration={2000} 
@@ -118,6 +117,7 @@ class Reservation extends Component {
                     />
                 </View>
             </Animatable.View>
+            </ScrollView>
         );
     }
 }

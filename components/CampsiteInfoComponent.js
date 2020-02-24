@@ -54,10 +54,9 @@ function RenderComments({comments}) {
 function RenderCampsite(props) {
 
     const {campsite} = props;
-
     const view = React.createRef();
-
     const recognizeDrag = ({dx}) => (dx < -200) ? true : false;
+    const recognizeComment = ({dx}) => (dx > 200) ? true : false;
 
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: () => true,
@@ -101,8 +100,10 @@ function RenderCampsite(props) {
             <Card
                 featuredTitle={campsite.name}
                 image={{uri: baseUrl + campsite.image}}>
-                <Text style={{margin: 10}}> {campsite.description}</Text>
-                <View style={styles.cardRow}>
+                    <Text style={{margin: 10}}> 
+                            {campsite.description}
+                    </Text>
+                    <View style={styles.cardRow}>
                 <Icon
                     name={props.favorite ? 'heart' : 'heart-o'}
                     type='font-awesome'
@@ -113,12 +114,15 @@ function RenderCampsite(props) {
                         console.log('Already set as a favorite') : props.markFavorite()}
                 />
                 <Icon 
-                name='pencil' 
-                type='font-awesome' 
-                color='#5637DD' 
-                raised reverse onPress={() => props.onShowModal()} 
-                style={styles.cardItem}/>
-            </View>
+                    name='pencil' 
+                    type='font-awesome' 
+                    color='#5637DD' 
+                    raised 
+                    reverse 
+                    onPress={() => props.onShowModal()} 
+                    style={styles.cardItem}
+                />
+                </View>
             </Card>
             </Animatable.View>
         );
@@ -133,6 +137,7 @@ class CampsiteInfo extends Component{
         super(props);
         this.state = {
             showModal:false,
+            favorite: false,
             rating:5,
             author:'',
             text:''
@@ -154,7 +159,8 @@ class CampsiteInfo extends Component{
             rating:5,
             author:'',
             text:'',
-            showModal: false
+            showModal: false,
+            favorite: false
         });
     }
     
@@ -183,19 +189,22 @@ class CampsiteInfo extends Component{
                     transparent={false} 
                     visible={this.state.showModal} 
                     onRequestClose={() => this.toggleModal()}>
+
                 <View style={styles.modal}>
+
                 <Rating 
+                    type
                     showRating 
                     startingValue={this.state.rating} 
                     imageSize={40} 
                     style={{paddingVertical: 10}} 
-                    onFinishRating={(rating)=>this.setState({rating: rating})} 
+                    onFinishRating={(rating)=> this.setState({rating: rating})} 
                     />
                     <Input 
                         placeholder='Author'  
                         leftIcon={{ type: 'font-awesome', name: 'user-o' }} 
                         leftIconContainerStyle={{paddingRight:10}} 
-                        onChangeText={(author)=>this.setState({author: author})} 
+                        onChangeText={(author)=> this.setState({author: author})} 
                         value={this.state.author} 
                         />
                     <Input 
