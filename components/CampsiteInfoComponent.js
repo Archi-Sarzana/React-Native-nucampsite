@@ -5,8 +5,7 @@ import { Text, View, ScrollView, FlatList,
 import { Card, Icon, Rating, Input } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
-import { postFavorite } from '../redux/ActionCreators';
-import { postComment } from '../redux/ActionCreators'; 
+import { postFavorite, postComment } from '../redux/ActionCreators';
 import * as Animatable from 'react-native-animatable';
 
 const mapStateToProps = state => {
@@ -23,6 +22,8 @@ const mapDispatchToProps = {
 };
 
 function RenderComments({comments}) {
+    if (comments) {
+
     const renderCommentItem = ({item}) => {
         return (
             <View style={{margin: 10}}>
@@ -31,13 +32,13 @@ function RenderComments({comments}) {
                     readonly 
                     startingValue={item.rating} 
                     imageSize={10} 
-                    style={{alignItems: 'flex-start',
-                    paddingVertical:'5%'}} 
+                    style={{alignItems: 'flex-start', paddingVertical:5 }} 
                     />
                 <Text style={{fontSize: 12}}>{`-- ${item.author}, ${item.date}`}</Text>
             </View>
         );
     };
+
     return (
         <Animatable.View animation='fadeInUp' duration={2000} delay={1000}>
         <Card title='Comments'>
@@ -48,7 +49,10 @@ function RenderComments({comments}) {
             />
         </Card>
         </Animatable.View>
-    );
+        );
+    }
+    return <View/>
+
 }
 
 function RenderCampsite(props) {
@@ -193,7 +197,6 @@ class CampsiteInfo extends Component{
                 <View style={styles.modal}>
 
                 <Rating 
-                    type
                     showRating 
                     startingValue={this.state.rating} 
                     imageSize={40} 
