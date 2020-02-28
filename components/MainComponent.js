@@ -6,6 +6,7 @@ import Directory from './DirectoryComponent';
 import CampsiteInfo from './CampsiteInfoComponent';
 import Reservation from './ReservationComponent';
 import Favorites from './FavoritesComponent';
+import Login from './LoginComponent';
 import { View, Platform, StyleSheet, Text, ScrollView, Image } from 'react-native';
 import { createStackNavigator, createDrawerNavigator,
     DrawerItems } from 'react-navigation';
@@ -14,6 +15,7 @@ import SafeAreaView from 'react-native-safe-area-view';
 import { connect } from 'react-redux';
 import { fetchCampsites, fetchComments, fetchPromotions,
     fetchPartners } from '../redux/ActionCreators';
+
 
 const mapDispatchToProps = {
     fetchCampsites,
@@ -170,7 +172,29 @@ const FavoritesNavigator = createStackNavigator(
     }
 );
 
-
+const LoginNavigator = createStackNavigator(
+    {
+      Login: { screen: Login }
+    },
+    {
+      navigationOptions: ({navigation}) =>  ({
+        headerStyle: {
+          backgroundColor: '#5637DD'
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          color: '#fff'
+        },
+        headerLeft: <Icon
+              name='sign-in'
+              type='font-awesome'
+              iconStyle={styles.stackIcon}
+              onPress={() => navigation.toggleDrawer()}
+            />
+      })
+    }
+  );
+  
 const CustomDrawerContentComponent = props => (
     <ScrollView>
         <SafeAreaView 
@@ -192,6 +216,19 @@ const CustomDrawerContentComponent = props => (
 
 const MainNavigator = createDrawerNavigator(
     {
+        Login: {
+            screen: LoginNavigator,
+            navigationOptions: {
+                drawerIcon: ({tintColor}) => (
+                    <Icon
+                        name='sign-in'
+                        type='font-awesome'
+                        size={24}
+                        color={tintColor}
+                    />
+                )
+            }
+        },
         Home: {
             screen: HomeNavigator,
             navigationOptions: {
@@ -257,7 +294,7 @@ const MainNavigator = createDrawerNavigator(
                         size={24}
                         color={tintColor}
                     />
-                )
+                ) 
             }
         },
         Contact: {
@@ -276,8 +313,11 @@ const MainNavigator = createDrawerNavigator(
         }
     },
     {
+        //initialRouteName ensures Home screen is the first screen loaded
+        initialRouteName: 'Home',
         drawerBackgroundColor: '#CEC8FF',
         contentComponent: CustomDrawerContentComponent
+        
     }
 );
 
