@@ -6,21 +6,20 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import { createBottomTabNavigator } from 'react-navigation';
 import { baseUrl } from '../shared/baseUrl';
+import * as ImageManipulator from 'expo-image-manipulator';
 
 //state is holding the username and password
 //state is holding the value of the remember me checkbox verification, which will initialize to false 
 class LoginTab extends Component {
-
     constructor(props) {
         super(props);
-
         this.state = {
             username: '',
             password: '',
             remember: false
         };
     }
-    //Since this will be a screen in the app, the static navigationOptions creates the title
+ //Since this will be a screen in the app, the static navigationOptions creates the title
     static navigationOptions = {
         title: 'Login',
         tabBarIcon: ({tintColor}) => (
@@ -31,7 +30,7 @@ class LoginTab extends Component {
             />
         )
     }
-    //When Login button is clicked on this event handler will be used
+//When Login button is clicked on this event handler will be used
     handleLogin() {
         console.log(JSON.stringify(this.state));
         if (this.state.remember) {
@@ -55,6 +54,7 @@ class LoginTab extends Component {
                 }
             });
     }
+    
     //Form 
     //Setting up Style for stylesheet 
     //1st Input component to get Username, prop is username, leftIcon with fontAwesome|
@@ -161,7 +161,32 @@ class RegisterTab extends Component {
             });
             if (!capturedImage.cancelled) {
                 console.log(capturedImage);
-                this.setState({imageUrl: capturedImage.uri});
+                this.processImage(capturedImage.uri);
+            }
+        }
+    }
+
+    processImage = async (imgUri) => {
+        const processedImage = await ImageManipulator.manipulateAsync(
+            imgUri,
+            [{resize: { width: 400}}],
+            { format: ImageManipulator.SaveFormat.PNG }
+        ); 
+        console.log(processedImage);
+        this.setState({imageUrl: processedImage.uri});
+    }
+
+    getImageFromGallery = async () => {
+        const cameraRollPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+        if (cameraRollPermission.status === 'granted') {
+            const capturedImage = await ImagePicker.launchImageLibraryAsync({
+                allowsEditing: true,
+                aspect: [1, 1]
+            });
+            if (!capturedImage.cancelled) {
+                console.log(capturedImage);
+                this.processImage(capturedImage.uri);
             }
         }
     }
@@ -191,6 +216,10 @@ class RegisterTab extends Component {
                         <Button
                             title='Camera'
                             onPress={this.getImageFromCamera}
+                        />
+                        <Button
+                            title='Gallery'
+                            onPress={this.getImageFromGallery}
                         />
                     </View>
                     <Input

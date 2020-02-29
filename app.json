@@ -24,7 +24,10 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "co.nucamp.nucampsite.student"
+    },
+    "android": {
+      "package": "co.nucamp.nucampsite.student"
     }
   }
 }

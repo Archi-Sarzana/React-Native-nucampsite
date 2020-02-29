@@ -15,6 +15,7 @@ import SafeAreaView from 'react-native-safe-area-view';
 import { connect } from 'react-redux';
 import { fetchCampsites, fetchComments, fetchPromotions,
     fetchPartners } from '../redux/ActionCreators';
+import NetInfo from '@react-native-community/netinfo';
 
 
 const mapDispatchToProps = {
@@ -328,6 +329,44 @@ class Main extends Component {
         this.props.fetchComments();
         this.props.fetchPromotions();
         this.props.fetchPartners();
+        this.showNetInfo();
+        
+
+        this.unsubscribeNetInfo = NetInfo.addEventListener(connectionInfo => {
+            this.handleConnectivityChange(connectionInfo);
+        });
+    }
+
+    componentWillUnmount(){
+        this.unsubscribeNetInfo();
+    };
+
+    showNetInfo = async () => {
+       const connectionInfo = await NetInfo.fetch();
+            (Platform.OS==='ios')?
+                Alert.alert('Initial Network Connectivity Type: ', connectionInfo.type)
+                : ToastAndroid.show('Initial Network Connectivity Type: '+connectionInfo.type, 
+                ToastAndroid.LONG);
+    }
+
+    handleConnectivityChange = connectionInfo => {
+        let connectionMsg = "You are now connected to an active network.";
+        switch(connectionInfo.type){
+            case 'none':
+                connectionMsg = 'No network connection is active.';
+                break;
+            case 'unknown':
+                connectionMsg = 'The network connection stat is now unknown.';
+                break;
+            case 'cellular':
+                connectionMsg = 'You are now connected to a cellular network.';
+                break;
+            case 'wifi':
+                connectionMsg = 'You are now connected to a WIFI network.'
+                break;
+        }
+        (Platform.OS==='ios?')? Alert.alert('Connection change:', connectionMsg)
+            : ToastAndroid.show(connectionMsg, ToastAndroid.LONG);
     }
 
 
